@@ -8,6 +8,7 @@ import imgLeh1 from '../assets/images/destinations/lehladakhh.jpg';
 import imgLeh2 from '../assets/images/destinations/ladakh.jpg';
 import imgRaj1 from '../assets/images/destinations/rajsthann.jpg';
 import imgjaisalmer from '../assets/images/destinations/jaisalmer.jpg';
+
 import imggrandrajsthan from '../assets/images/destinations/rajasthan-heritage.jpg';
 import imgRaj2 from '../assets/images/destinations/rajasthan_1.jpg';
 import imgUdaipur1 from '../assets/images/destinations/udaipur_1.jpg';
