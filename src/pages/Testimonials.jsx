@@ -1,168 +1,149 @@
-import { useState, useEffect } from 'react';
+import { FiStar, FiCheck, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
+import { useState } from 'react';
+
+const handleImageError = (e) => {
+    e.target.src = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400";
+};
 
 const Testimonials = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0);
 
-  const testimonialSlides = [
-    {
-      title: 'Client Testimonials',
-      description: 'See what our happy travelers say about their experiences with us',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Real Experiences',
-      description: 'Authentic reviews from travelers who have journeyed with Inventrip',
-      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Trusted by Thousands',
-      description: 'Join 10K+ satisfied travelers who have chosen Inventrip for their journeys',
-      image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1920&h=1080&fit=crop'
-    }
-  ];
+    const reviews = [
+        {
+            id: 1,
+            name: "Ananya Kapoor",
+            role: "Luxury Trekker",
+            location: "Mumbai",
+            content: "Inventrip took our Spiti expedition to a level I didn't think was possible in India. The glamping setups and the precision of the logistics were absolutely elite.",
+            rating: 5,
+            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
+            stats: "12 Days / Spiti Circuit"
+        },
+        {
+            id: 2,
+            name: "Vikram Seth",
+            role: "Adventure Photographer",
+            location: "Bangalore",
+            content: "The SUV expedition in Ladakh was life-changing. Our driver was not just a driver but a survivalist and an expert local guide. Highly recommend their premium packages.",
+            rating: 5,
+            image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+            stats: "10 Days / Zanskar Valley"
+        },
+        {
+            id: 3,
+            name: "Sarah Jenkins",
+            role: "Solo Traveler",
+            location: "London",
+            content: "I'm always cautious about safety as a solo traveler. Inventrip's 24/7 concierge and verified homestays in Kerala made me feel like royalty and completely safe.",
+            rating: 5,
+            image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+            stats: "15 Days / Kerala Backwaters"
+        }
+    ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonialSlides.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [testimonialSlides.length]);
-  const testimonials = [
-    {
-      name: "Rajesh Kumar",
-      location: "Delhi",
-      package: "Leh Adventure Tour",
-      rating: 5,
-      text: "Amazing experience with Inventrip! The Leh tour was perfectly organized, and the team was very helpful throughout. Highly recommended!"
-    },
-    {
-      name: "Priya Sharma",
-      location: "Mumbai",
-      package: "Kashmir Honeymoon",
-      rating: 5,
-      text: "Our honeymoon in Kashmir was magical thanks to Inventrip. Everything was well-planned, and the accommodations were excellent. Thank you!"
-    },
-    {
-      name: "Amit Patel",
-      location: "Ahmedabad",
-      package: "Rajasthan Royal Tour",
-      rating: 4,
-      text: "Great service and value for money. The Rajasthan tour covered all major attractions, and our guide was knowledgeable and friendly."
-    },
-    {
-      name: "Sneha Reddy",
-      location: "Bangalore",
-      package: "Kerala Backwaters",
-      rating: 5,
-      text: "Kerala trip was unforgettable! The backwater cruise was the highlight. Inventrip made our vacation stress-free and enjoyable."
-    },
-    {
-      name: "Vikram Singh",
-      location: "Pune",
-      package: "Spiti Valley Adventure",
-      rating: 5,
-      text: "Adventure of a lifetime! The Spiti Valley tour exceeded all expectations. Professional team and excellent arrangements."
-    },
-    {
-      name: "Anjali Mehta",
-      location: "Kolkata",
-      package: "Goa Beach Holiday",
-      rating: 4,
-      text: "Perfect beach vacation in Goa. The package was well-priced, and all activities were enjoyable. Will book again!"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Slider */}
-      <section className="relative text-white py-20 sm:py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={testimonialSlides[currentSlide]?.image}
-            alt={testimonialSlides[currentSlide]?.title}
-            className="w-full h-full object-cover transition-opacity duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-1000 ease-in-out text-center"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {testimonialSlides.map((slide, index) => (
-                <div key={index} className="min-w-full">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-                    {slide.title}
-                  </h1>
-                  <p className="text-xl sm:text-2xl md:text-3xl max-w-4xl mx-auto opacity-95 font-light">
-                    {slide.description}
-                  </p>
+    return (
+        <div className="min-h-screen bg-white">
+            {/* HEADER */}
+            <section className="py-24 bg-gray-950 text-white rounded-b-[4rem] text-center overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="max-w-4xl mx-auto px-4 relative z-10">
+                    <p className="text-white font-black uppercase tracking-[0.5em] text-[10px] mb-8">Verified Voices</p>
+                    <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none italic mb-8">
+                        The <span className="text-white">Elite</span> Travel Community.
+                    </h1>
+                    <p className="text-gray-200 font-bold text-lg max-w-2xl mx-auto italic">Real stories from travelers who demand nothing but perfection from their Himalayan and coastal escapes.</p>
                 </div>
-              ))}
-            </div>
-          </div>
+            </section>
 
-          {/* Slider Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {testimonialSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all ${
-                  currentSlide === index ? 'bg-white w-8' : 'bg-white/50 w-2'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* FEATURED STORY */}
+            <section className="py-24 max-w-7xl mx-auto px-4">
+                <div className="bg-white border border-gray-100 rounded-[4rem] p-10 md:p-24 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.1)] relative overflow-hidden">
+                    <div className="absolute top-12 left-12 text-gray-50 text-9xl -z-0 opacity-20"></div>
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-400">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i}>★</span>
-                  ))}
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                        <div className="relative">
+                            <div className="absolute -inset-4 bg-tertiary/10 rounded-[4rem] rotate-3 -z-10"></div>
+                            <img
+                                src={reviews[activeIndex].image}
+                                alt={reviews[activeIndex].name}
+                                onError={handleImageError}
+                                className="w-full aspect-square object-cover rounded-[3.5rem] shadow-2xl"
+                            />
+                            <div className="absolute -bottom-8 -right-8 bg-gray-950 p-8 rounded-3xl text-white shadow-2xl">
+                                <div className="text-3xl font-black tracking-tighter text-white">{reviews[activeIndex].stats}</div>
+                                <div className="text-[9px] font-black uppercase tracking-widest text-gray-400">Expedition Detail</div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-10">
+                            <div className="flex gap-1 text-amber-500 text-2xl">
+                                {[...Array(5)].map((_, i) => <FiStar key={i} className="fill-current" />)}
+                            </div>
+                            <p className="text-2xl md:text-4xl font-black text-gray-900 tracking-tight leading-tight italic">
+                                "{reviews[activeIndex].content}"
+                            </p>
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h3 className="text-2xl font-black text-gray-900 tracking-tighter uppercase">{reviews[activeIndex].name}</h3>
+                                    <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px]">{reviews[activeIndex].role} &bull; {reviews[activeIndex].location}</p>
+                                </div>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => setActiveIndex(prev => (prev - 1 + reviews.length) % reviews.length)}
+                                        className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-500 hover:bg-gray-900 hover:text-primary transition-all shadow-sm"
+                                    >
+                                        <FiArrowLeft fontSize={24} />
+                                    </button>
+                                    <button
+                                        onClick={() => setActiveIndex(prev => (prev + 1) % reviews.length)}
+                                        className="w-14 h-14 bg-gray-900 rounded-2xl flex items-center justify-center text-primary hover:bg-primary transition-all shadow-xl"
+                                    >
+                                        <FiArrowRight fontSize={24} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              
-              <p className="text-gray-700 mb-4 italic leading-relaxed">
-                "{testimonial.text}"
-              </p>
-              
-              <div className="border-t pt-4">
-                <p className="font-semibold text-gray-800">{testimonial.name}</p>
-                <p className="text-sm text-gray-600">{testimonial.location}</p>
-                <p className="text-sm text-blue-600 mt-1">{testimonial.package}</p>
-              </div>
-            </div>
-          ))}
+            </section>
+
+            {/* STATS STRIP */}
+            <section className="py-24 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                    <div>
+                        <div className="text-6xl font-black text-gray-900 tracking-tighter italic">5.0</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Google Average</p>
+                    </div>
+                    <div>
+                        <div className="text-6xl font-black text-gray-900 tracking-tighter italic">12K+</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Happy Explorers</p>
+                    </div>
+                    <div>
+                        <div className="text-6xl font-black text-gray-900 tracking-tighter italic">98%</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Return Clients</p>
+                    </div>
+                    <div>
+                        <div className="text-6xl font-black text-gray-900 tracking-tighter italic">24/7</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Concierge Support</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA GRID */}
+            <section className="py-24 max-w-7xl mx-auto px-4">
+                <div className="bg-primary rounded-[4rem] p-12 md:p-24 text-center space-y-10 relative overflow-hidden group">
+                    <div className="absolute inset-0 opacity-10 blur-3xl pointer-events-none group-hover:opacity-20 transition-opacity">
+                        <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full"></div>
+                        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-950 rounded-full"></div>
+                    </div>
+                    <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none relative z-10 italic">Your Review is the <br /> <span className="text-gray-950">Missing Piece.</span></h2>
+                    <Link to="/booking" className="inline-flex relative z-10 bg-white text-gray-900 text-[11px] font-black uppercase tracking-widest px-12 py-6 rounded-2xl shadow-2xl hover:scale-105 transition-all">
+                        Start Your Story <FiArrowRight className="ml-3" />
+                    </Link>
+                </div>
+            </section>
         </div>
-        
-        <div className="mt-12 text-center">
-          <p className="text-gray-700 mb-4">
-            Have you traveled with us? Share your experience!
-          </p>
-          <a
-            href="mailto:testimonials@inventrip.com"
-            className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition inline-block"
-          >
-            Submit Your Testimonial
-          </a>
-        </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Testimonials;
-

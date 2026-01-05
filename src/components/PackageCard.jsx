@@ -1,80 +1,107 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import CallbackForm from './CallbackForm';
+import { FiStar, FiPhone, FiGift } from 'react-icons/fi';
+import { BiPhoneCall } from 'react-icons/bi';
 
-const PackageCard = ({ pkg }) => {
-  const [showCallback, setShowCallback] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const discount = Math.round(((pkg.originalPrice - pkg.price) / pkg.originalPrice) * 100);
+const PackageCard = ({ pkg, onRequestCallback }) => {
+    const savings = pkg.originalPrice - pkg.price;
 
-  // Fallback placeholder image
-  const placeholderImage = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop';
+    return (
+        <div className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 flex flex-col h-full relative">
+            {/* Image Section */}
+            <div className="relative h-64 overflow-hidden">
+                <Link to={`/package/${pkg.slug}`} className="block w-full h-full">
+                    <img
+                        src={pkg.image}
+                        alt={pkg.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                </Link>
 
-  const handleImageError = () => {
-    setImageError(true);
-  };
+                {/* Save Badge */}
+                <div className="absolute top-4 left-0 bg-[#39a34a] text-white px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-md rounded-r-md">
+                    <span className="mr-1">🏷️</span> Save INR {savings.toLocaleString()}
+                </div>
 
-  return (
-    <>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-        <Link to={`/package/${pkg.slug}`}>
-          <div className="w-full h-48 bg-gray-200 overflow-hidden">
-            <img
-              src={imageError ? placeholderImage : (pkg.image || placeholderImage)}
-              alt={pkg.title}
-              className="w-full h-full object-cover"
-              onError={handleImageError}
-              loading="lazy"
-            />
-          </div>
-        </Link>
-        
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-500">{pkg.duration}</span>
-            <div className="flex items-center">
-              <span className="text-yellow-400">★</span>
-              <span className="text-sm text-gray-700 ml-1">{pkg.rating}</span>
-              <span className="text-sm text-gray-500 ml-1">({pkg.reviews})</span>
+                {/* Decorative Dots */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white opacity-100"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                </div>
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
             </div>
-          </div>
-          
-          <Link to={`/package/${pkg.slug}`}>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 hover:text-blue-600">
-              {pkg.title}
-            </h3>
-          </Link>
-          
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="text-xl sm:text-2xl font-bold text-blue-600">₹{pkg.price.toLocaleString()}</span>
-            <span className="text-base sm:text-lg text-gray-500 line-through">₹{pkg.originalPrice.toLocaleString()}</span>
-            <span className="text-xs sm:text-sm text-green-600 font-semibold">Save {discount}%</span>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-            <a
-              href="tel:7832911551"
-              className="flex-1 bg-green-600 text-white text-center py-2 px-4 rounded-md hover:bg-green-700 transition text-sm sm:text-base flex items-center justify-center"
-              aria-label="Call Now"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-            </a>
-            <button
-              onClick={() => setShowCallback(true)}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition text-sm sm:text-base"
-            >
-              Request Callback
-            </button>
-          </div>
+
+            {/* Content Section */}
+            <div className="p-5 pb-8 flex flex-col flex-grow">
+                {/* Meta Row */}
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-500 font-medium">{pkg.duration || "6 days & 5 nights"}</span>
+                    <div className="flex items-center gap-1">
+                        <FiStar className="text-green-500 fill-current w-3 h-3" />
+                        <span className="text-sm font-bold text-green-600">{pkg.rating || "5.0"}</span>
+                        <span className="text-sm text-gray-400">({pkg.reviews || 200})</span>
+                    </div>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-lg font-bold text-gray-900 leading-snug mb-0.5 line-clamp-2">
+                    <Link to={`/package/${pkg.slug}`} className="hover:text-[#39a34a] transition-colors">
+                        {pkg.title}
+                    </Link>
+                </h3>
+
+                {/* Itinerary (Mocked/Static for styling match) */}
+                {/* <div className="flex items-center gap-1 text-xs sm:text-sm font-bold text-gray-800 mb-3 tracking-tight">
+                    <span className="font-extrabold">1D</span> Phuntsholing • <span className="font-extrabold">1D</span> Thimphu • <span className="text-orange-500 font-bold">...+2</span>
+                </div> */}
+
+                {/* Sale Badge */}
+                <div className="inline-flex items-center gap-1.5 bg-[#39a34a] text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-4 shadow-sm">
+                    <FiGift className="w-3 h-3" /> OFFER PRICE!
+                </div>
+
+                {/* Pricing Block */}
+                <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-sm text-gray-400 line-through">₹{pkg.originalPrice.toLocaleString()}</span>
+                        <span className="text-xs font-bold text-green-600 bg-green-50 px-1.5 rounded">
+                            SAVE ₹{savings.toLocaleString()}
+                        </span>
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-bold text-gray-900">₹{pkg.price.toLocaleString()}</span>
+                        <span className="text-sm text-gray-500 font-medium">/Adult</span>
+                    </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 mt-auto pt-4 border-t border-gray-100">
+                    <button className="flex-shrink-0 w-12 h-12 flex items-center justify-center border border-[#39a34a]/20 rounded-lg text-[#39a34a] hover:bg-[#39a34a]/5 transition-colors">
+                        <FiPhone className="w-5 h-5" />
+                    </button>
+                    {onRequestCallback ? (
+                        <button
+                            onClick={onRequestCallback}
+                            className="flex-grow h-12 flex items-center justify-center bg-[#39a34a] text-white text-base font-bold rounded-lg hover:bg-[#2e823b] transition-colors shadow-lg shadow-[#39a34a]/20"
+                        >
+                            Request Callback
+                        </button>
+                    ) : (
+                        <Link
+                            to={`/package/${pkg.slug}`}
+                            className="flex-grow h-12 flex items-center justify-center bg-[#39a34a] text-white text-base font-bold rounded-lg hover:bg-[#2e823b] transition-colors shadow-lg shadow-[#39a34a]/20"
+                        >
+                            Request Callback
+                        </Link>
+                    )}
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <CallbackForm isOpen={showCallback} onClose={() => setShowCallback(false)} />
-    </>
-  );
+    );
 };
 
 export default PackageCard;
-

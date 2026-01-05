@@ -1,395 +1,368 @@
-import { useState, useRef, useEffect } from 'react';
+// Navbar Component
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { destinations as destinationsData } from '../data/packages';
+import logo from '../assets/logo.png';
+import { FiMenu, FiHome, FiInfo, FiGlobe, FiTruck, FiMapPin, FiMail, FiCompass } from 'react-icons/fi';
+import { MdFilterHdr, MdTerrain, MdAcUnit, MdCastle, MdLocalFlorist, MdLandscape, MdBeachAccess, MdDirectionsBoat } from 'react-icons/md';
+import { FaTree, FaMountain } from 'react-icons/fa';
+import { tracking } from '../data/tracking';
+import { expeditions } from '../data/expeditions';
 
 const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileTransportOpen, setMobileTransportOpen] = useState(false);
-  // Initialize based on current location
-  const [showDestinationMenu, setShowDestinationMenu] = useState(() => location.pathname.startsWith('/destinations'));
-  const scrollContainerRef = useRef(null);
-  const [showRightArrow, setShowRightArrow] = useState(true);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [expandedMobileMenu, setExpandedMobileMenu] = useState({});
 
-  // Show destination menu when on destination pages, hide on other pages
+  // Close mobile menu when route changes
   useEffect(() => {
-    setShowDestinationMenu(location.pathname.startsWith('/destinations'));
-    // Close mobile drawers when navigating to keep layout consistent
     setMobileMenuOpen(false);
-    setMobileTransportOpen(false);
+    setExpandedMobileMenu({});
   }, [location.pathname]);
 
-  // Map destinations from packages data to menu format
-  const destinationMenu = Object.values(destinationsData).map(dest => {
-    // Use short name for display
-    const shortNameMap = {
-      'Himachal Pradesh': 'Himachal',
-      'Spiti Valley': 'Spiti',
-      'Leh Ladakh': 'Leh'
-    };
-    
-    return {
-      name: shortNameMap[dest.name] || dest.name,
-      slug: dest.slug,
-      trending: false
-    };
-  });
-
-  // Icon component for destinations - matching main header icon style
-  const DestinationIcon = ({ slug }) => {
-    const iconStyle = { width: 20, height: 20 };
-    
-    switch(slug) {
-      case 'himachal':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M6 16L12 20L18 16L15 10L12 12L9 10L6 16Z" fill="#8B7355" stroke="#654321" strokeWidth="1.5"/>
-            <path d="M9 10L12 8L15 10" stroke="#654321" strokeWidth="1.5"/>
-            <path d="M12 8V12" stroke="#654321" strokeWidth="1.5"/>
-          </svg>
-        );
-      case 'spiti':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M5 16L12 20L19 16L16 9L12 11L8 9L5 16Z" fill="#A0826D" stroke="#654321" strokeWidth="1.5"/>
-            <path d="M8 9L12 7L16 9" stroke="#654321" strokeWidth="1.5"/>
-          </svg>
-        );
-      case 'leh':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <ellipse cx="12" cy="14" rx="8" ry="6" fill="#D2B48C" stroke="#8B7355" strokeWidth="1.5"/>
-            <path d="M8 10L12 8L16 10" stroke="#8B7355" strokeWidth="1.5" fill="none"/>
-            <circle cx="10" cy="12" r="1.5" fill="#654321"/>
-            <circle cx="14" cy="12" r="1.5" fill="#654321"/>
-            <path d="M12 14L12 16" stroke="#654321" strokeWidth="1.5"/>
-          </svg>
-        );
-      case 'rajasthan':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M8 8L12 6L16 8V16L12 18L8 16V8Z" fill="#FF69B4" stroke="#C71585" strokeWidth="1.5"/>
-            <rect x="10" y="10" width="4" height="6" fill="#FFFFFF" stroke="#FF69B4" strokeWidth="1"/>
-            <path d="M11 12H13M11 14H13" stroke="#FF69B4" strokeWidth="1.5"/>
-          </svg>
-        );
-      case 'kashmir':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <circle cx="12" cy="10" r="4" fill="#FFB6C1" stroke="#FF69B4" strokeWidth="1.5"/>
-            <circle cx="10" cy="9" r="1" fill="#FF1493"/>
-            <circle cx="14" cy="9" r="1" fill="#FF1493"/>
-            <path d="M12 11.5C11.5 11.5 11 12 11 12.5" stroke="#FF1493" strokeWidth="1.5" strokeLinecap="round"/>
-            <path d="M12 15L11 18L12 20L13 18L12 15Z" fill="#90EE90" stroke="#32CD32" strokeWidth="1"/>
-          </svg>
-        );
-      case 'uttarakhand':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M7 17L12 20L17 17L14 10L12 12L10 10L7 17Z" fill="#87CEEB" stroke="#4682B4" strokeWidth="1.5"/>
-            <path d="M10 10L12 8L14 10" stroke="#4682B4" strokeWidth="1.5"/>
-            <ellipse cx="12" cy="14" rx="3" ry="2" fill="#32CD32" stroke="#228B22" strokeWidth="1"/>
-          </svg>
-        );
-      case 'goa':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M4 14H20V20H4V14Z" fill="#FFD700" stroke="#FFA500" strokeWidth="1.5"/>
-            <path d="M10 14L12 10L14 14" fill="#FF6347" stroke="#DC143C" strokeWidth="1.5"/>
-            <rect x="11.5" y="14" width="1" height="6" fill="#8B4513"/>
-            <path d="M6 18H18" stroke="#87CEEB" strokeWidth="2"/>
-          </svg>
-        );
-      case 'kerala':
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <path d="M8 16L10 13L12 15L14 12L16 14L18 11" stroke="#32CD32" strokeWidth="2" fill="none" strokeLinecap="round"/>
-            <circle cx="10" cy="16" r="2" fill="#228B22" stroke="#32CD32" strokeWidth="1"/>
-            <ellipse cx="15" cy="13" rx="2.5" ry="1.5" fill="#87CEEB" stroke="#4682B4" strokeWidth="1"/>
-          </svg>
-        );
-      default:
-        return (
-          <svg viewBox="0 0 24 24" fill="none" style={iconStyle} className="w-5 h-5">
-            <circle cx="12" cy="12" r="8" fill="#FFA500" stroke="#FF8C00" strokeWidth="1.5"/>
-          </svg>
-        );
-    }
+  const toggleMobileSubmenu = (name) => {
+    setExpandedMobileMenu(prev => ({
+      ...prev,
+      [name]: !prev[name]
+    }));
   };
 
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 200,
-        behavior: 'smooth'
-      });
+  const defaultNavItems = [
+    {
+      name: 'Home',
+      path: '/',
+      type: 'link',
+      icon: <FiHome className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'About',
+      path: '/about',
+      type: 'link',
+      icon: <FiInfo className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Destination',
+      type: 'dropdown',
+      icon: <FiGlobe className="w-5 h-5 mb-1" />,
+      items: [
+        { name: 'All Destinations', path: '/destination' },
+        { name: 'Himachal', path: '/destinations/himachal' },
+        { name: 'Spiti', path: '/destinations/spiti' },
+        { name: 'Leh', path: '/destinations/leh' },
+        { name: 'Rajasthan', path: '/destinations/rajasthan' },
+        { name: 'Kashmir', path: '/destinations/kashmir' },
+        { name: 'Uttarakhand', path: '/destinations/uttarakhand' },
+        { name: 'Goa', path: '/destinations/goa' },
+        { name: 'Kerala', path: '/destinations/kerala' }
+      ]
+    },
+    {
+      name: 'Transportation',
+      type: 'dropdown',
+      icon: <FiTruck className="w-5 h-5 mb-1" />,
+      items: [
+        { name: 'Taxi', path: '/transport' },
+        { name: 'Volvo', path: '/transport' },
+        { name: 'Flight', path: '/transport' },
+        { name: 'Railway', path: '/transport' }
+      ]
+    },
+    {
+      name: 'Tracking',
+      path: '/tracking',
+      type: 'dropdown',
+      icon: <FiMapPin className="w-5 h-5 mb-1" />,
+      items: tracking.map(trek => ({
+        name: trek.title,
+        path: `/tracking/${trek.slug}`
+      }))
+    },
+    {
+      name: 'Expedition',
+      path: '/expedition',
+      type: 'dropdown',
+      icon: <FiCompass className="w-5 h-5 mb-1" />,
+      items: [
+        { name: 'Bike Expeditions', path: '/expedition/bike' },
+        ...expeditions.bike.map(exp => ({ name: `- ${exp.title}`, path: `/expedition/bike/${exp.slug}` })),
+        { name: 'SUV Expeditions', path: '/expedition/suv' },
+        ...expeditions.suv.map(exp => ({ name: `- ${exp.title}`, path: `/expedition/suv/${exp.slug}` }))
+      ]
+    },
+    {
+      name: 'Contact',
+      path: '/contact',
+      type: 'link',
+      icon: <FiMail className="w-5 h-5 mb-1" />
     }
-  };
+  ];
 
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowRightArrow(scrollLeft + clientWidth < scrollWidth - 10);
+  const destinationNavItems = [
+    {
+      name: 'All',
+      path: '/destination',
+      type: 'link',
+      icon: <FiGlobe className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Himachal',
+      path: '/destinations/himachal',
+      type: 'link',
+      icon: <FaTree className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Spiti',
+      path: '/destinations/spiti',
+      type: 'link',
+      icon: <FaMountain className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Leh',
+      path: '/destinations/leh',
+      type: 'link',
+      icon: <MdAcUnit className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Rajasthan',
+      path: '/destinations/rajasthan',
+      type: 'link',
+      icon: <MdCastle className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Kashmir',
+      path: '/destinations/kashmir',
+      type: 'link',
+      icon: <MdLocalFlorist className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Uttarakhand',
+      path: '/destinations/uttarakhand',
+      type: 'link',
+      icon: <MdLandscape className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Goa',
+      path: '/destinations/goa',
+      type: 'link',
+      icon: <MdBeachAccess className="w-5 h-5 mb-1" />
+    },
+    {
+      name: 'Kerala',
+      path: '/destinations/kerala',
+      type: 'link',
+      icon: <MdDirectionsBoat className="w-5 h-5 mb-1" />
     }
-  };
+  ];
 
-  const handleScroll = () => {
-    checkScroll();
-  };
+  const navItems = (location.pathname.includes('/destinations') || location.pathname === '/destination') ? destinationNavItems : defaultNavItems;
 
-  useEffect(() => {
-    if (showDestinationMenu) {
-      checkScroll();
-      window.addEventListener('resize', checkScroll);
-      return () => window.removeEventListener('resize', checkScroll);
-    }
-  }, [showDestinationMenu]);
-
-  // If destination menu is shown, render the destination scrolling menu
-  if (showDestinationMenu) {
-    return (
-      <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+  return (
+    <>
+      <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-4">
+          <div className="flex justify-between items-center h-20 sm:h-24">
             {/* Logo */}
             <div className="flex items-center flex-shrink-0">
-              <Link to="/" className="text-xl sm:text-2xl font-bold text-blue-600 flex items-center gap-1 sm:gap-2">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="hidden sm:inline">Inventrip</span>
+              <Link to="/" className="flex items-center gap-1 sm:gap-2">
+                <img src={logo} alt="Inventrip Logo" className="h-12 w-auto sm:h-14" />
+                {/* <span className="hidden lg:inline text-xl sm:text-2xl font-bold text-primary">Inventrip</span> */}
               </Link>
             </div>
 
-            {/* Destination Scrolling Menu */}
-            <div className="flex-1 relative ml-2 sm:ml-8 min-w-0">
-              <div 
-                className={`flex items-center gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide ${showRightArrow ? 'pr-12 sm:pr-20' : 'pr-4 sm:pr-8'}`}
-                ref={scrollContainerRef}
-                onScroll={handleScroll}
-                onClick={(e) => {
-                  // Prevent navigation if clicking on the container itself, not on a link
-                  if (e.target === e.currentTarget) {
-                    e.preventDefault();
-                  }
-                }}
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                
-                {/* Destinations */}
-                {destinationMenu.map((destination, index) => {
-                  const isActive = location.pathname === `/destinations/${destination.slug}`;
-                  return (
-                    <Link
-                      key={index}
-                      to={`/destinations/${destination.slug}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      className={`flex items-center gap-1 sm:gap-2 cursor-pointer group relative whitespace-nowrap ${isActive ? '' : ''}`}
-                    >
-                      {destination.trending && (
-                        <div className="absolute -top-1 -right-1 z-10">
-                          <span className="bg-orange-500 text-white text-[8px] font-semibold px-1 py-0.5 rounded flex items-center gap-0.5 whitespace-nowrap">
-                            <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            </svg>
-                            <span className="hidden sm:inline">Trending</span>
-                          </span>
-                        </div>
-                      )}
-                      <div className="flex items-center justify-center">
-                        <DestinationIcon slug={destination.slug} />
-                      </div>
-                      <span className={`text-xs sm:text-sm transition ${isActive ? 'text-blue-600' : 'text-gray-700 group-hover:text-blue-600'}`}>
-                        {destination.name}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-6 justify-center">
+              {navItems.map((item, index) => {
+                const isActive = item.path === location.pathname;
 
-              {/* Right Arrow Button */}
-              {showRightArrow && (
-                <button
-                  onClick={scrollRight}
-                  className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 sm:p-2 shadow-md transition z-10"
-                  aria-label="Scroll right"
-                >
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              )}
+                return (
+                  <div
+                    key={index}
+                    className="relative group flex flex-col items-center justify-center cursor-pointer min-w-[60px]"
+                    onMouseEnter={() => item.type === 'dropdown' && setActiveDropdown(item.name)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    {item.type === 'link' ? (
+                      <Link to={item.path} className={`flex flex-col items-center transition-colors ${isActive ? 'text-[#39a34a] font-bold' : 'text-gray-700 hover:text-black'}`}>
+                        <div className={`transform transition-transform group-hover:scale-110 duration-200 ${isActive ? 'text-[#39a34a]' : ''}`}>
+                          {item.icon}
+                        </div>
+                        <span className="text-xs sm:text-sm whitespace-nowrap mt-1">{item.name}</span>
+                      </Link>
+                    ) : item.path ? (
+                      <Link to={item.path} className={`flex flex-col items-center transition-colors ${isActive ? 'text-[#39a34a] font-bold' : 'text-gray-700 hover:text-black'}`}>
+                        <div className={`transform transition-transform group-hover:scale-110 duration-200 ${isActive ? 'text-[#39a34a]' : ''}`}>
+                          {item.icon}
+                        </div>
+                        <span className="text-xs sm:text-sm whitespace-nowrap mt-1 flex items-center gap-1">
+                          {item.name}
+                          <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </span>
+                      </Link>
+                    ) : (
+                      <div className={`flex flex-col items-center transition-colors ${isActive ? 'text-[#39a34a] font-bold' : 'text-gray-700 hover:text-black'}`}>
+                        <div className={`transform transition-transform group-hover:scale-110 duration-200 ${isActive ? 'text-[#39a34a]' : ''}`}>
+                          {item.icon}
+                        </div>
+                        <span className="text-xs sm:text-sm whitespace-nowrap mt-1 flex items-center gap-1">
+                          {item.name}
+                          <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Dropdown Menu */}
+                    {item.type === 'dropdown' && (
+                      <div
+                        className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden transition-all duration-200 z-50 ${activeDropdown === item.name ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'
+                          }`}
+                      >
+                        <div className="py-2">
+                          {item.items.map((subItem, subIndex) => (
+                            <Link
+                              key={subIndex}
+                              to={subItem.path}
+                              className="block px-4 py-2 text-sm text-black hover:bg-gray-100 transition-colors"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="text-black hover:text-primary transition p-2"
+              >
+                <FiMenu className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </div>
       </nav>
-    );
-  }
 
-  // Default navigation menu
-  return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
-            <Link to="/" className="text-xl sm:text-2xl font-bold text-blue-600 flex items-center gap-1 sm:gap-2">
-              <svg className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Inventrip
-            </Link>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-            <Link 
-              to="/about"
-              className="text-gray-700 hover:text-blue-600 transition flex items-center gap-2"
+      {/* Mobile Sidebar (Drawer) */}
+      <div
+        className={`fixed inset-0 z-[60] transform lg:hidden transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+
+        {/* Sidebar Content */}
+        <div
+          className={`absolute top-0 left-0 w-[80%] max-w-[300px] h-full bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+        >
+          {/* Sidebar Header */}
+          <div className="flex items-center justify-between p-4 border-b">
+            <span className="text-xl font-bold text-primary">Inventrip</span>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-gray-500 hover:text-black transition"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-              About Us
-            </Link>
-            
-            <Link 
-              to="/booking"
-              className="text-gray-700 hover:text-blue-600 transition flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              Booking
-            </Link>
-            
-            <Link 
-              to="/transport"
-              className="text-gray-700 hover:text-blue-600 transition flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-              </svg>
-              Transport
-            </Link>
-            
-            <Link 
-              to={destinationMenu.length > 0 ? `/destinations/${destinationMenu[0].slug}` : "/"}
-              className="text-gray-700 hover:text-blue-600 transition flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Destinations
-            </Link>
-            
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition flex items-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              Contact Us
-            </Link>
-          </div>
-          
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-700"
-            >
-              {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
             </button>
           </div>
-        </div>
-        
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t mt-2 py-4 animate-fade-in">
-            <Link 
-              to="/about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              About Us
-            </Link>
-            
-            <Link 
-              to="/booking"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              Booking
-            </Link>
-            
-            <div className="px-4 py-2">
-              <button 
-                onClick={() => setMobileTransportOpen(!mobileTransportOpen)}
-                className="flex items-center justify-between w-full text-gray-700 hover:text-blue-600"
-              >
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                  </svg>
-                  Transport
-                </div>
-                <svg className={`w-4 h-4 transition-transform ${mobileTransportOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {mobileTransportOpen && (
-                <div className="pl-4 mt-2 space-y-1">
-                  <Link to="/transport" className="block py-2 px-3 rounded-md text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                    <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                    </svg>
-                    View All Transport
+
+          {/* Sidebar Navigation */}
+          <div className="p-4 overflow-y-auto h-[calc(100vh-64px)] space-y-4">
+            {navItems.map((item, index) => (
+              <div key={index} className="border-b border-gray-200 pb-2 last:border-0">
+                {item.type === 'link' ? (
+                  <Link
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-black hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                  >
+                    <div className="w-6 h-6">{item.icon}</div>
+                    <span className="font-medium">{item.name}</span>
                   </Link>
-                </div>
-              )}
-            </div>
-            
-            <Link 
-              to={destinationMenu.length > 0 ? `/destinations/${destinationMenu[0].slug}` : "/"}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Destinations
-            </Link>
-            
-            <Link 
-              to="/contact" 
-              className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              Contact Us
-            </Link>
+                ) : (
+                  <div>
+                    {item.path ? (
+                      <div className="flex items-center">
+                        <Link
+                          to={item.path}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex-1 flex items-center gap-3 text-black hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                        >
+                          <div className="w-6 h-6">{item.icon}</div>
+                          <span className="font-medium">{item.name}</span>
+                        </Link>
+                        <button
+                          onClick={() => toggleMobileSubmenu(item.name)}
+                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          <svg
+                            className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${expandedMobileMenu[item.name] ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => toggleMobileSubmenu(item.name)}
+                        className="w-full flex items-center justify-between text-black hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6">{item.icon}</div>
+                          <span className="font-medium">{item.name}</span>
+                        </div>
+                        <svg
+                          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${expandedMobileMenu[item.name] ? 'rotate-180' : ''}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    )}
+
+                    {/* Submenu Accordion */}
+                    <div
+                      className={`pl-11 pr-2 space-y-1 overflow-hidden transition-all duration-300 ${expandedMobileMenu[item.name] ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'
+                        }`}
+                    >
+                      {item.items.map((subItem, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          to={subItem.path}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block py-2 text-sm text-gray-600 hover:text-black border-l-2 border-transparent hover:border-primary pl-3 transition-colors"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
+        </div>
       </div>
-    </nav>
+    </>
   );
 };
 

@@ -1,294 +1,243 @@
-import { useParams } from 'react-router-dom';
-import { useState, useMemo, useEffect } from 'react';
-import { destinations } from '../data/packages';
-import PackageCard from '../components/PackageCard';
+import { useParams, Link } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { destinations } from "../data/packages";
+import PackageCard from "../components/PackageCard";
+import {
+  FiFilter,
+  FiChevronDown,
+  FiStar,
+  FiRotateCcw,
+  FiMapPin,
+  FiArrowRight,
+  FiActivity,
+  FiZap,
+  FiCompass,
+  FiPhone,
+  FiX,
+} from "react-icons/fi";
+import { usePopup } from "../context/PopupContext";
+
+const handleImageError = (e) => {
+  e.target.src =
+    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920";
+};
 
 const Destination = () => {
+  const { openPopup } = usePopup();
+
   const { slug } = useParams();
   const destination = destinations[slug];
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedRatings, setSelectedRatings] = useState([]);
+  const [activeSort, setActiveSort] = useState("popular");
+  const [priceRange, setPriceRange] = useState(100000);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // Calculate min and max price from packages
-  const priceBounds = useMemo(() => {
-    if (!destination) return [0, 100000];
-    const prices = destination.packages.map(pkg => pkg.price);
-    return [Math.min(...prices), Math.max(...prices)];
-  }, [destination]);
-
-  // Initialize price range with actual bounds
-  const [priceRange, setPriceRange] = useState(() => {
-    if (destination) {
-      const prices = destination.packages.map(pkg => pkg.price);
-      return [Math.min(...prices), Math.max(...prices)];
-    }
-    return [0, 100000];
-  });
-
-  // Update price range when destination changes
-  useEffect(() => {
-    if (destination && priceBounds[0] !== 0 && priceBounds[1] !== 100000) {
-      setPriceRange(priceBounds);
-    }
-  }, [destination, priceBounds]);
-
-  // Filter packages based on selected criteria
   const filteredPackages = useMemo(() => {
     if (!destination) return [];
-    
-    return destination.packages.filter(pkg => {
-      // Price filter
-      if (pkg.price < priceRange[0] || pkg.price > priceRange[1]) {
-        return false;
-      }
-      
-      // Rating filter
-      if (selectedRatings.length > 0) {
-        const matchesRating = selectedRatings.some(rating => {
-          if (rating === 4) return pkg.rating >= 4 && pkg.rating < 4.5;
-          if (rating === 4.5) return pkg.rating >= 4.5 && pkg.rating < 5;
-          if (rating === 5) return pkg.rating >= 5;
-          return false;
-        });
-        if (!matchesRating) return false;
-      }
-      
-      return true;
-    });
-  }, [destination, priceRange, selectedRatings]);
+    let items = [...destination.packages];
 
-  const handleRatingToggle = (rating) => {
-    setSelectedRatings(prev => 
-      prev.includes(rating) 
-        ? prev.filter(r => r !== rating)
-        : [...prev, rating]
-    );
-  };
+    // Simple sort
+    if (activeSort === "low") items.sort((a, b) => a.price - b.price);
+    if (activeSort === "high") items.sort((a, b) => b.price - a.price);
+    if (activeSort === "rating") items.sort((a, b) => b.rating - a.rating);
 
-  const resetFilters = () => {
-    setPriceRange(priceBounds);
-    setSelectedRatings([]);
-  };
+    return items.filter((p) => p.price <= priceRange);
+  }, [destination, activeSort, priceRange]);
 
   if (!destination) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4">Destination Not Found</h1>
-          <p className="text-sm sm:text-base text-gray-600">The destination you're looking for doesn't exist.</p>
+          <div className="w-24 h-24 bg-primary/5 text-primary rounded-full flex items-center justify-center text-4xl mx-auto mb-8 animate-spin-slow">
+            <FiCompass />
+          </div>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tighter mb-4 italic">
+            Terra Incognito
+          </h1>
+          <p className="text-gray-600 font-bold mb-8 uppercase tracking-widest text-xs">
+            Region not identified in our global registry
+          </p>
+          <Link
+            to="/"
+            className="text-primary font-black uppercase tracking-widest text-[10px] border-b-2 border-primary pb-1"
+          >
+            Return to Grid
+          </Link>
         </div>
       </div>
     );
   }
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  
-  // Create slides from destination packages
-  const destinationSlides = destination.packages.slice(0, 3).map(pkg => ({
-    title: destination.name,
-    description: `${destination.packages.length} Amazing Packages Available`,
-    image: pkg.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop'
-  }));
-
-  useEffect(() => {
-    if (destinationSlides.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % destinationSlides.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [destinationSlides.length]);
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Slider */}
-      {destinationSlides.length > 0 && (
-        <section className="relative text-white py-20 sm:py-24 md:py-32 overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={destinationSlides[currentSlide]?.image}
-              alt={destinationSlides[currentSlide]?.title}
-              className="w-full h-full object-cover transition-opacity duration-1000"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
-          </div>
-          
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="overflow-hidden">
-              <div 
-                className="flex transition-transform duration-1000 ease-in-out text-center"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {destinationSlides.map((slide, index) => (
-                  <div key={index} className="min-w-full">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-                      {slide.title}
-                    </h1>
-                    <p className="text-xl sm:text-2xl md:text-3xl max-w-4xl mx-auto opacity-95 font-light">
-                      {slide.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Slider Indicators */}
-            {destinationSlides.length > 1 && (
-              <div className="flex justify-center gap-2 mt-8">
-                {destinationSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-2 rounded-full transition-all ${
-                      currentSlide === index ? 'bg-white w-8' : 'bg-white/50 w-2'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      <div className="py-6 sm:py-8 md:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">{destination.name} Packages</h2>
-              <p className="text-sm sm:text-base text-gray-600">
-                {filteredPackages.length} of {destination.packages.length} packages
-              </p>
-            </div>
-          {/* Mobile Filter Toggle */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            Filters
-          </button>
+    <div className="min-h-screen bg-white font-poppins">
+      {/* IMMERSIVE HEADER */}
+      <section className="relative h-[40vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={destination.image}
+            alt={destination.name}
+            onError={handleImageError}
+            className="w-full h-full object-cover scale-105"
+          />
+          <div className="absolute inset-0 bg-gray-950/60 backdrop-blur-[1px]"></div>
         </div>
+        <div className="relative max-w-7xl mx-auto px-4 w-full text-center sm:text-left">
+          <p className="text-tertiary font-bold uppercase tracking-[0.2em] text-xs mb-4 flex items-center justify-center sm:justify-start gap-4">
+            <span className="w-8 h-px bg-tertiary" /> Global Registry
+          </p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-none mb-4">
+            {destination.name}
+          </h1>
+          <div className="flex items-center justify-center sm:justify-start gap-6 text-white/50">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+              <FiZap className="text-tertiary" /> {destination.packages.length}{" "}
+              Packages
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+              <FiActivity className="text-tertiary" /> Verified
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Filter Sidebar */}
-          <div className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
-            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 sticky top-20">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-gray-800">Filter Results</h2>
+      {/* FILTER & CONTENT GRID */}
+      <section className="py-12 max-w-7xl mx-auto px-4">
+        <div className="flex flex-col-reverse lg:flex-row gap-12">
+          {/* LEFT: FILTERS (Bottom on Mobile) */}
+          <div className="lg:w-1/4 space-y-8 mt-8 lg:mt-0 lg:sticky lg:top-8 lg:h-fit">
+            <div className="hidden lg:block">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-6 border-l-4 border-[#39a34a] pl-3">
+                Refine Search
+              </h3>
+              <div className="space-y-8">
+                {/* Sort */}
+                <div className="space-y-3">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Sort By
+                  </label>
+                  <div className="flex flex-col gap-2">
+                    {[
+                      { id: "popular", label: "Popularity" },
+                      { id: "low", label: "Low to High" },
+                      { id: "high", label: "High to Low" },
+                      { id: "rating", label: "Top Rated" },
+                    ].map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => setActiveSort(s.id)}
+                        className={`text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${
+                          activeSort === s.id
+                            ? "bg-primary text-white shadow-md"
+                            : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price Slider */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-end">
+                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      Max Price
+                    </label>
+                    <span className="text-sm font-bold text-primary">
+                      ₹{priceRange.toLocaleString()}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="5000"
+                    max="100000"
+                    step="5000"
+                    value={priceRange}
+                    onChange={(e) => setPriceRange(Number(e.target.value))}
+                    className="w-full accent-primary h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] font-bold text-gray-400 uppercase">
+                    <span>min</span>
+                    <span>100k+</span>
+                  </div>
+                </div>
+
                 <button
-                  onClick={resetFilters}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  onClick={() => {
+                    setPriceRange(100000);
+                    setActiveSort("popular");
+                  }}
+                  className="w-full py-3 border border-gray-200 rounded-xl text-xs font-bold uppercase tracking-wider text-gray-600 flex items-center justify-center gap-2 hover:bg-gray-50 transition-all"
                 >
-                  Reset All
+                  <FiRotateCcw /> Reset Filters
                 </button>
               </div>
+            </div>
 
-              {/* Price Filter */}
-              <div className="mb-6 pb-6 border-b border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-semibold text-gray-700 uppercase">Price</h3>
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">₹{priceRange[0].toLocaleString()}</span>
-                    <span className="text-gray-600">₹{priceRange[1].toLocaleString()}</span>
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="range"
-                      min={priceBounds[0]}
-                      max={priceBounds[1]}
-                      value={priceRange[0]}
-                      onChange={(e) => {
-                        const newMin = parseInt(e.target.value);
-                        setPriceRange([newMin, Math.max(newMin, priceRange[1])]);
-                      }}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                    />
-                    <input
-                      type="range"
-                      min={priceBounds[0]}
-                      max={priceBounds[1]}
-                      value={priceRange[1]}
-                      onChange={(e) => {
-                        const newMax = parseInt(e.target.value);
-                        setPriceRange([Math.min(priceRange[0], newMax), newMax]);
-                      }}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
-                    />
-                  </div>
-                  <button
-                    onClick={() => setPriceRange(priceBounds)}
-                    className="text-xs text-blue-600 hover:text-blue-700"
-                  >
-                    Show All
-                  </button>
-                </div>
-              </div>
-
-              {/* Rating Filter */}
-              <div className="mb-6 pb-6 border-b border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-semibold text-gray-700 uppercase">Star Rating</h3>
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="space-y-3">
-                  {[5, 4.5, 4].map((rating) => (
-                    <label key={rating} className="flex items-center cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={selectedRatings.includes(rating)}
-                        onChange={() => handleRatingToggle(rating)}
-                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                      />
-                      <div className="ml-3 flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <span
-                            key={i}
-                            className={`text-lg ${
-                              i < Math.floor(rating)
-                                ? 'text-yellow-400'
-                                : i < rating
-                                ? 'text-yellow-300'
-                                : 'text-gray-300'
-                            }`}
-                          >
-                            ★
-                          </span>
-                        ))}
-                        <span className="ml-2 text-sm text-gray-700">
-                          {rating === 5 ? '5.0 & above' : rating === 4.5 ? '4.5 & above' : '4.0 & above'}
-                        </span>
-                      </div>
-                    </label>
-                  ))}
-                </div>
+            {/* Support Box (Based on User Image) */}
+            <div className="bg-[#0D2137] p-8 rounded-3xl text-white space-y-6 relative overflow-hidden shadow-2xl">
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 mb-2">
+                  Need Help?
+                </p>
+                <h4 className="text-xl font-bold leading-tight mb-4">
+                  Talk to a Certified Expert
+                </h4>
+                <a
+                  href="tel:7832911551"
+                  className="block text-2xl font-black tracking-tight hover:text-orange-500 transition-colors"
+                >
+                  +91 78329 11551
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Packages Grid */}
-          <div className="flex-1">
-            {filteredPackages.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {filteredPackages.map((pkg) => (
-                  <PackageCard key={pkg.id} pkg={pkg} />
-                ))}
+          {/* RIGHT: PACKAGE GRID */}
+          <div className="lg:w-3/4">
+            <div className="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center text-sm font-bold shadow-md">
+                  {filteredPackages.length}
+                </span>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 tracking-tight">
+                    Available Packages
+                  </h2>
+                </div>
               </div>
-            ) : (
-              <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                <p className="text-gray-600 mb-4">No packages found matching your filters.</p>
+
+              {/* Mobile Filter Trigger */}
+              <button
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-gray-200 transition"
+              >
+                <FiFilter /> Filter
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPackages.map((pkg) => (
+                <PackageCard
+                  key={pkg.id}
+                  pkg={pkg}
+                  onRequestCallback={() =>
+                    openPopup({ destination: pkg.title })
+                  }
+                />
+              ))}
+            </div>
+
+            {filteredPackages.length === 0 && (
+              <div className="py-24 text-center space-y-6 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                <div className="text-4xl text-gray-300 flex justify-center">
+                  <FiFilter />
+                </div>
+                <h3 className="text-xl font-bold text-gray-600">
+                  No Packages Found
+                </h3>
                 <button
-                  onClick={resetFilters}
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  onClick={() => setPriceRange(100000)}
+                  className="text-primary font-bold uppercase tracking-widest text-xs border-b border-primary pb-0.5"
                 >
                   Reset Filters
                 </button>
@@ -296,6 +245,91 @@ const Destination = () => {
             )}
           </div>
         </div>
+      </section>
+
+      {/* Mobile Filter Sheet */}
+      <div
+        className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${
+          isMobileFilterOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsMobileFilterOpen(false)}
+        />
+        <div
+          className={`absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 transition-transform duration-300 max-h-[85vh] overflow-y-auto ${
+            isMobileFilterOpen ? "translate-y-0" : "translate-y-full"
+          }`}
+        >
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-xl font-bold text-gray-900">Filters</h3>
+            <button
+              onClick={() => setIsMobileFilterOpen(false)}
+              className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+            >
+              <FiX size={20} />
+            </button>
+          </div>
+
+          <div className="space-y-8">
+            {/* Sort */}
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Sort By
+              </label>
+              <div className="flex flex-col gap-2">
+                {[
+                  { id: "popular", label: "Popularity" },
+                  { id: "low", label: "Low to High" },
+                  { id: "high", label: "High to Low" },
+                  { id: "rating", label: "Top Rated" },
+                ].map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => setActiveSort(s.id)}
+                    className={`text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${
+                      activeSort === s.id
+                        ? "bg-primary text-white shadow-md"
+                        : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Price Slider */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-end">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Max Price
+                </label>
+                <span className="text-sm font-bold text-primary">
+                  ₹{priceRange.toLocaleString()}
+                </span>
+              </div>
+              <input
+                type="range"
+                min="5000"
+                max="100000"
+                step="5000"
+                value={priceRange}
+                onChange={(e) => setPriceRange(Number(e.target.value))}
+                className="w-full accent-primary h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <button
+              onClick={() => setIsMobileFilterOpen(false)}
+              className="w-full bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg"
+            >
+              Show {filteredPackages.length} Packages
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -303,4 +337,3 @@ const Destination = () => {
 };
 
 export default Destination;
-

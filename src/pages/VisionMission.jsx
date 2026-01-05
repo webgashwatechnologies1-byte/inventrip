@@ -1,148 +1,101 @@
-import { useState, useEffect } from 'react';
+import { FiTarget, FiZap, FiCompass, FiAward, FiShield, FiHeart, FiTrendingUp, FiGlobe } from 'react-icons/fi';
 
 const VisionMission = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const visionSlides = [
-    {
-      title: 'Our Vision',
-      description: 'To become India\'s most trusted and preferred travel partner',
-      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Our Mission',
-      description: 'Providing personalized, high-quality travel services that exceed expectations',
-      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Our Values',
-      description: 'Integrity, Excellence, Innovation, and Customer Focus at our core',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop'
-    }
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % visionSlides.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [visionSlides.length]);
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Slider */}
-      <section className="relative text-white py-20 sm:py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={visionSlides[currentSlide]?.image}
-            alt={visionSlides[currentSlide]?.title}
-            className="w-full h-full object-cover transition-opacity duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-1000 ease-in-out text-center"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {visionSlides.map((slide, index) => (
-                <div key={index} className="min-w-full">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-                    {slide.title}
-                  </h1>
-                  <p className="text-xl sm:text-2xl md:text-3xl max-w-4xl mx-auto opacity-95 font-light">
-                    {slide.description}
-                  </p>
+    return (
+        <div className="min-h-screen bg-white">
+            {/* HERO */}
+            <section className="relative h-[60vh] flex items-center overflow-hidden bg-gray-950">
+                <div className="absolute inset-0 opacity-40">
+                    <img
+                        src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920"
+                        alt="Mountain Range"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent"></div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Slider Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {visionSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all ${
-                  currentSlide === index ? 'bg-white w-8' : 'bg-white/50 w-2'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-md p-8">
-          
-          <div className="prose max-w-none text-gray-700 space-y-8">
-            <section className="bg-blue-50 p-6 rounded-lg">
-              <h2 className="text-3xl font-semibold text-gray-800 mb-4">Our Vision</h2>
-              <p className="text-lg leading-relaxed">
-                To become India's most trusted and preferred travel partner, known for creating 
-                exceptional travel experiences that inspire, delight, and create lasting memories. 
-                We envision a world where travel is accessible, sustainable, and transformative 
-                for everyone.
-              </p>
+                <div className="relative max-w-7xl mx-auto px-4 w-full text-center">
+                    <p className="text-white font-black uppercase tracking-[0.5em] text-[10px] mb-8">Our Foundation</p>
+                    <h1 className="text-5xl md:text-9xl font-black text-white tracking-tighter leading-none italic mb-8">
+                        Beyond <span className="text-white tracking-widest">Travel.</span>
+                    </h1>
+                    <p className="text-gray-300 font-bold text-lg max-w-2xl mx-auto italic">Defining the standards for modern exploration in the Indian subcontinent.</p>
+                </div>
             </section>
-            
-            <section className="bg-green-50 p-6 rounded-lg">
-              <h2 className="text-3xl font-semibold text-gray-800 mb-4">Our Mission</h2>
-              <p className="text-lg leading-relaxed mb-4">
-                Our mission is to provide personalized, high-quality travel services that exceed 
-                customer expectations. We are committed to:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-lg">
-                <li>Delivering exceptional customer service at every touchpoint</li>
-                <li>Offering competitive prices without compromising on quality</li>
-                <li>Creating customized travel experiences tailored to individual preferences</li>
-                <li>Promoting sustainable and responsible tourism practices</li>
-                <li>Building long-term relationships based on trust and reliability</li>
-                <li>Supporting local communities and preserving cultural heritage</li>
-              </ul>
+
+            {/* MISSION & VISION GRID */}
+            <section className="py-24 max-w-7xl mx-auto px-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    {/* Vision */}
+                    <div className="bg-gray-50 p-12 md:p-24 rounded-[4rem] border border-gray-100 space-y-8 group hover:bg-white hover:shadow-2xl transition-all duration-700">
+                        <div className="w-20 h-20 bg-primary/5 text-primary rounded-[2rem] flex items-center justify-center text-4xl border border-primary/10 group-hover:scale-110 transition-transform">
+                            <FiCompass />
+                        </div>
+                        <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic">Our Vision</h2>
+                        <p className="text-xl text-gray-700 font-bold leading-relaxed italic">
+                            "To be the undisputed global curator of elite travel experiences in India, where every journey is a masterpiece of precision, safety, and cultural immersion."
+                        </p>
+                        <div className="pt-8 border-t border-gray-100 flex gap-6 grayscale opacity-30">
+                            <FiGlobe className="text-2xl" />
+                            <FiTrendingUp className="text-2xl" />
+                            <FiAward className="text-2xl" />
+                        </div>
+                    </div>
+
+                    {/* Mission */}
+                    <div className="bg-gray-900 p-12 md:p-24 rounded-[4rem] text-white space-y-8 group hover:shadow-2xl transition-all duration-700">
+                        <div className="w-20 h-20 bg-white/10 text-tertiary rounded-[2rem] flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                            <FiTarget />
+                        </div>
+                        <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Our Mission</h2>
+                        <ul className="space-y-6">
+                            {[
+                                { label: "Precision Planning", desc: "Crafting flawless itineraries with zero margin for error." },
+                                { label: "Local Prosperity", desc: "Ensuring our expeditions benefit the remote communities we visit." },
+                                { label: "Elite Safety", desc: "Setting the benchmark for high-altitude and offroad traveler security." },
+                                { label: "Storytelling", desc: "Creating memories that resonate far beyond the final checkout." }
+                            ].map((m, i) => (
+                                <li key={i} className="flex gap-4 group/item">
+                                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 group-hover/item:scale-150 transition-transform" />
+                                    <div>
+                                        <p className="text-xs font-black uppercase tracking-widest text-white">{m.label}</p>
+                                        <p className="text-gray-300 text-sm font-bold italic">{m.desc}</p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </section>
-            
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-4">Our Values</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="border-l-4 border-blue-600 pl-4">
-                  <h3 className="font-semibold text-gray-800 mb-2">Integrity</h3>
-                  <p className="text-gray-700">
-                    We conduct our business with honesty, transparency, and ethical practices.
-                  </p>
+
+            {/* CORE OBJECTIVES */}
+            <section className="py-24 bg-white border-t border-gray-50">
+                <div className="max-w-7xl mx-auto px-4 text-center mb-16">
+                    <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic">Elite Objectives</h2>
                 </div>
-                <div className="border-l-4 border-green-600 pl-4">
-                  <h3 className="font-semibold text-gray-800 mb-2">Excellence</h3>
-                  <p className="text-gray-700">
-                    We strive for excellence in every service we provide and every interaction we have.
-                  </p>
+                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {[
+                        { title: "Standard of Care", icon: <FiHeart />, desc: "Unrivaled empathy and dedication to every traveler's unique needs." },
+                        { title: "Innovation", icon: <FiZap />, desc: "Leveraging technology to bridge the gap between wilderness and comfort." },
+                        { title: "Integrity", icon: <FiShield />, desc: "Absolute transparency in logistics, pricing, and environmental ethics." }
+                    ].map((obj, i) => (
+                        <div key={i} className="p-12 text-center space-y-6 hover:-translate-y-4 transition-transform duration-500">
+                            <div className="text-4xl text-primary flex justify-center">{obj.icon}</div>
+                            <h3 className="text-xl font-black text-gray-900 uppercase tracking-widest">{obj.title}</h3>
+                            <p className="text-gray-700 text-sm font-bold italic leading-relaxed">{obj.desc}</p>
+                        </div>
+                    ))}
                 </div>
-                <div className="border-l-4 border-yellow-600 pl-4">
-                  <h3 className="font-semibold text-gray-800 mb-2">Innovation</h3>
-                  <p className="text-gray-700">
-                    We continuously innovate to improve our services and enhance customer experience.
-                  </p>
-                </div>
-                <div className="border-l-4 border-red-600 pl-4">
-                  <h3 className="font-semibold text-gray-800 mb-2">Customer Focus</h3>
-                  <p className="text-gray-700">
-                    Our customers are at the heart of everything we do. Their satisfaction is our priority.
-                  </p>
-                </div>
-              </div>
             </section>
-          </div>
+
+            {/* CLOSING STRIP */}
+            <section className="py-32 bg-gray-50 text-center rounded-t-[5rem] mx-4">
+                <div className="max-w-3xl mx-auto px-4">
+                    <h2 className="text-3xl font-black text-gray-900 tracking-tight italic mb-8">"Travel is the only thing you buy that makes you richer. We make sure that wealth is eternal."</h2>
+                    <div className="w-20 h-1.5 bg-primary mx-auto rounded-full"></div>
+                </div>
+            </section>
         </div>
-      </div>
-    </div>
-    </div>
-  );
+    );
 };
 
 export default VisionMission;
-

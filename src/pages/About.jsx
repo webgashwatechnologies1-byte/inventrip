@@ -1,387 +1,220 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { FiCheckCircle, FiDollarSign, FiHeadphones, FiCalendar, FiGlobe, FiRepeat, FiHome, FiShield, FiFileText, FiPhone, FiAward, FiSettings, FiTarget, FiZap, FiCheck, FiArrowRight } from 'react-icons/fi';
+import { HiOutlineLightBulb, HiOutlineSparkles, HiOutlineBriefcase, HiOutlineUserGroup, HiOutlineGlobeAlt, HiMiniTrophy, HiMiniRocketLaunch, HiMiniHandThumbUp } from 'react-icons/hi2';
+
+const handleImageError = (e) => {
+  e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"; // High-quality travel fallback
+};
 
 const About = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Slides for About page
-  const aboutSlides = [
-    {
-      title: 'About Inventrip',
-      description: 'Your trusted travel partner, dedicated to creating unforgettable journeys across India',
-      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Expert Travel Services',
-      description: 'Years of experience in curating personalized travel experiences for every traveler',
-      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: 'Trusted by Thousands',
-      description: '10K+ happy travelers trust us for their perfect travel experiences',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop'
-    },
-    {
-      title: '50+ Destinations',
-      description: 'Explore amazing destinations across India with our curated packages',
-      image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1920&h=1080&fit=crop'
-    }
-  ];
-
-  // Auto-slide effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % aboutSlides.length);
-    }, 4000); // Change slide every 4 seconds
-
-    return () => clearInterval(interval);
-  }, [aboutSlides.length]);
   const features = [
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: "Expert Travel Consultants",
-      description: "Extensive knowledge and years of experience in the travel industry"
+      icon: <FiCheckCircle />,
+      title: "Complete Travel Solutions",
+      description: "Tour packages, bus/taxi/train/flight bookings - all your travel needs in one platform"
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-        </svg>
-      ),
-      title: "Customized Packages",
-      description: "Tailored to your unique preferences and travel needs"
+      icon: <FiSettings />,
+      title: "Customized Tour Packages",
+      description: "Tailored itineraries with flexible transport options (bus, taxi, train, flight)"
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
+      icon: <FiDollarSign />,
       title: "Best Price Guarantee",
       description: "Transparent pricing with competitive rates and no hidden costs"
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      ),
+      icon: <FiHeadphones />,
       title: "24/7 Customer Support",
       description: "Round-the-clock assistance throughout your journey"
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      ),
-      title: "Verified Services",
-      description: "Trusted accommodations and reliable transportation"
+      icon: <FiShield />,
+      title: "Verified Transport Partners",
+      description: "Trusted buses, taxis, trains & flights with verified service providers"
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      ),
+      icon: <FiCalendar />,
       title: "Flexible Policies",
       description: "Easy booking and hassle-free cancellation options"
     }
   ];
 
-  const services = [
-    { 
-      name: "Tour Packages", 
-      description: "Curated packages to popular destinations",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      )
-    },
-    { 
-      name: "Transportation", 
-      description: "Taxi, Volvo, Flight, and Railway bookings",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-        </svg>
-      )
-    },
-    { 
-      name: "Accommodation", 
-      description: "Hotel bookings and verified stays",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      )
-    },
-    { 
-      name: "Travel Insurance", 
-      description: "Comprehensive coverage for your trip",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      )
-    },
-    { 
-      name: "Visa Assistance", 
-      description: "Expert help with visa documentation",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      )
-    },
-    { 
-      name: "Documentation Support", 
-      description: "Complete travel documentation services",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      )
-    }
-  ];
-
   const stats = [
-    { number: "10K+", label: "Happy Travelers", color: "from-blue-500 to-blue-600" },
-    { number: "50+", label: "Destinations", color: "from-green-500 to-green-600" },
-    { number: "500+", label: "Tour Packages", color: "from-purple-500 to-purple-600" },
-    { number: "24/7", label: "Support Available", color: "from-orange-500 to-orange-600" }
+    { number: "10K+", label: "Happy Travelers", icon: <HiMiniHandThumbUp />, color: 'text-amber-500', bg: 'bg-amber-50/50' },
+    { number: "50+", label: "Destinations", icon: <FiGlobe />, color: 'text-indigo-500', bg: 'bg-indigo-50/50' },
+    { number: "500+", label: "Tour Packages & Routes", icon: <HiMiniRocketLaunch />, color: 'text-rose-500', bg: 'bg-rose-50/50' },
+    { number: "24/7", label: "Support Available", icon: <FiHeadphones />, color: 'text-emerald-500', bg: 'bg-emerald-50/50' }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Slider */}
-      <section className="relative text-white py-20 sm:py-24 md:py-32 overflow-hidden">
+    <div className="min-h-screen bg-white">
+      {/* SECTION 1: CLEAN HERO (No Slider) */}
+      <section className="relative h-[400px] md:h-[500px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={aboutSlides[currentSlide]?.image}
-            alt={aboutSlides[currentSlide]?.title}
-            className="w-full h-full object-cover transition-opacity duration-1000"
+            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920"
+            alt="About Banner"
+            onError={handleImageError}
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-1000 ease-in-out text-center"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {aboutSlides.map((slide, index) => (
-                <div key={index} className="min-w-full">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-                    {slide.title}
-                  </h1>
-                  <p className="text-xl sm:text-2xl md:text-3xl max-w-4xl mx-auto opacity-95 font-light">
-                    {slide.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Slider Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {aboutSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all ${
-                  currentSlide === index ? 'bg-white w-8' : 'bg-white/50 w-2'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Introduction Section with Two Columns */}
-      <section className="py-16 sm:py-20 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop"
-                  alt="Travel Experience"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
-                Crafting Memorable Travel Experiences
-              </h2>
-              <div className="space-y-4 text-lg text-gray-700 leading-relaxed">
-                <p>
-                  Inventrip is your trusted travel partner, dedicated to creating unforgettable journeys 
-                  across India. With years of experience in the travel industry, we specialize in curating 
-                  personalized travel experiences that cater to your unique preferences and needs.
-                </p>
-                <p>
-                  Our mission is to make travel accessible, enjoyable, and memorable for everyone. 
-                  Whether you're planning a family vacation, a romantic honeymoon, an adventure trip, 
-                  or a spiritual journey, we have the perfect package for you.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics Section with Gradient Cards */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className={`bg-gradient-to-br ${stat.color} rounded-xl shadow-lg p-6 sm:p-8 text-center text-white transform hover:scale-105 transition-transform duration-300`}
-              >
-                <div className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-sm sm:text-base font-medium opacity-95">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Inventrip Section */}
-      <section className="py-16 sm:py-20 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
-              Why Choose Inventrip?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We are committed to providing exceptional travel experiences with unmatched service quality
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
+          <div className="max-w-3xl">
+            <p className="text-tertiary font-black uppercase tracking-[0.4em] mb-4 animate-fade-in">Discover Our Story</p>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none">
+              Crafting <span className="text-tertiary italic">Memorable</span> <br /> Journeys Since 2018
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 font-light max-w-2xl leading-relaxed">
+              Inventrip is your one-stop platform for all travel needs - from complete tour packages to individual bus, taxi, train, and flight bookings across India.
             </p>
           </div>
-          
+        </div>
+      </section>
+
+      {/* SECTION 2: INTRODUCTION & STATS */}
+      <section className="py-24 bg-gray-50/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mb-24">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] rotate-3 -z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1000"
+                alt="Our Vision"
+                onError={handleImageError}
+                className="relative rounded-[2.5rem] shadow-2xl w-full aspect-square object-cover"
+              />
+              <div className="absolute -bottom-8 -right-8 bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 hidden md:block">
+                <div className="text-5xl font-black text-primary mb-1 tracking-tighter">7+</div>
+                <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] leading-none">Years Excellence</div>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div className="inline-block px-4 py-1 bg-primary/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-primary">Our Legacy</div>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+                Your Trusted <span className="text-primary italic">Travel Partner</span> Across India
+              </h2>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Inventrip offers comprehensive travel solutions including curated tour packages, bus bookings, taxi rentals, railway tickets, flight reservations, and hotel accommodations. Whether you need a complete package or just transport, we've got you covered with verified services and competitive pricing.
+              </p>
+              <div className="grid grid-cols-2 gap-6 pt-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
+                    <FiCheck />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">Tour Packages</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
+                    <FiCheck />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">Bus Bookings</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 shadow-sm border border-amber-100">
+                    <FiCheck />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">Taxi & Cab Services</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 shadow-sm border border-rose-100">
+                    <FiCheck />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">Train & Flight Tickets</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Bar (Home Theme Style) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+            {stats.map((item, idx) => (
+              <div key={idx} className="group relative bg-white border border-gray-100 p-8 rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2 text-center flex flex-col items-center">
+                <div className={`w-20 h-20 ${item.bg} ${item.color} rounded-3xl flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm border border-white`}>
+                  {item.icon}
+                </div>
+                <h4 className="text-gray-900 font-black tracking-tighter text-3xl mb-1">{item.number}</h4>
+                <p className="text-gray-600 text-[10px] font-black uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-opacity">
+                  {item.label}
+                </p>
+                <div className={`absolute inset-0 ${item.bg} opacity-0 group-hover:opacity-20 rounded-[2rem] -z-10 blur-2xl transition-opacity duration-500`}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: CORE VALUES */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-20 text-center md:text-left">
+            <p className="text-primary font-black uppercase tracking-[0.3em] mb-4">Our Values</p>
+            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-none mb-8">
+              The Principles That <span className="text-primary italic">Define Us</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { title: "Trust", desc: "Transparent pricing for all tour packages and transport bookings with no hidden charges.", icon: <FiShield />, color: 'text-indigo-500' },
+              { title: "Excellence", desc: "Premium quality in every service - from luxury buses to verified hotels and expert guides.", icon: <HiMiniTrophy />, color: 'text-amber-500' },
+              { title: "Innovation", desc: "Easy online booking platform for buses, taxis, trains, flights & complete tour packages.", icon: <FiZap />, color: 'text-rose-500' },
+              { title: "Flexibility", desc: "Book complete packages or individual services - customize your trip exactly how you want.", icon: <FiTarget />, color: 'text-emerald-500' }
+            ].map((value, index) => (
+              <div key={index} className="group p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-2xl transition-all duration-500">
+                <div className={`text-4xl ${value.color} mb-6 group-hover:scale-110 transition-transform duration-500`}>{value.icon}</div>
+                <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight uppercase tracking-widest text-sm">{value.title}</h3>
+                <p className="text-gray-700 font-bold text-sm leading-relaxed">{value.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: WHY CHOOSE US - GRID */}
+      <section className="py-24 bg-gray-900 text-white rounded-[4rem] mx-4 mb-12 overflow-hidden relative">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920" alt="Pattern" className="w-full h-full object-cover" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4 uppercase">
+              The <span className="text-tertiary underline decoration-primary underline-offset-8">Inventrip</span> Edge
+            </h2>
+            <p className="text-gray-400 font-bold uppercase tracking-[0.2em] text-sm">Experience global standards with local warmth</p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 border border-gray-100"
-              >
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-14 h-14 rounded-xl flex items-center justify-center text-white mb-6 shadow-md">
+              <div key={index} className="bg-white/10 backdrop-blur-xl border border-white/10 p-10 rounded-[3rem] hover:bg-white/20 transition-all group">
+                <div className="w-16 h-16 bg-tertiary/20 rounded-2xl flex items-center justify-center text-tertiary text-3xl mb-8 group-hover:rotate-12 transition-transform">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+                <h3 className="text-2xl font-black mb-4 tracking-tighter">{feature.title}</h3>
+                <p className="text-gray-400 font-medium leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Our Services Section */}
-      <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
-              Our Services
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive travel solutions tailored to meet all your travel needs
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-xl p-8 sm:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, index) => (
-                <div 
-                  key={index}
-                  className="flex items-start space-x-4 p-4 rounded-lg hover:bg-blue-50 transition-colors duration-200 group"
-                >
-                  <div className="flex-shrink-0 bg-blue-100 group-hover:bg-blue-600 rounded-lg p-3 text-blue-600 group-hover:text-white transition-colors duration-200">
-                    {service.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">
-                      {service.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Core Values</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: "Trust", desc: "Building lasting relationships through transparency" },
-              { title: "Excellence", desc: "Striving for perfection in every service" },
-              { title: "Innovation", desc: "Embracing new ways to enhance travel" },
-              { title: "Care", desc: "Your satisfaction is our top priority" }
-            ].map((value, index) => (
-              <div key={index} className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-white border border-blue-100">
-                <div className="text-3xl font-bold text-blue-600 mb-3">{value.title}</div>
-                <p className="text-gray-600 text-sm">{value.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">Ready to Start Your Journey?</h2>
-          <p className="text-xl sm:text-2xl mb-10 opacity-95 max-w-3xl mx-auto font-light">
-            Let us help you create the perfect travel experience tailored to your dreams
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="tel:7832911551"
-              className="bg-white text-blue-600 px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 inline-flex items-center justify-center text-lg"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              Contact Us Now
+      {/* SECTION 5: CTA */}
+      <section className="py-24 bg-white text-center">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="inline-block px-4 py-1 bg-tertiary rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-gray-900 mb-8 shadow-xl shadow-tertiary/20">Let's Explore</div>
+          <h2 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter leading-none mb-10">
+            Ready to Start Your <br /> <span className="text-primary italic">Everlasting</span> Journey?
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <a href="tel:7832911551" className="bg-primary text-white text-sm font-black uppercase tracking-widest px-10 py-5 rounded-2xl shadow-2xl shadow-primary/40 hover:scale-105 transition-all flex items-center justify-center gap-3 group">
+              <FiPhone className="text-xl group-hover:rotate-12 transition-transform" /> Talk to Expert
             </a>
-            <Link
-              to="/booking"
-              className="bg-blue-900 text-white px-10 py-4 rounded-xl font-bold hover:bg-blue-800 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-white/30 inline-block text-lg"
-            >
-              Book Your Trip
+            <Link to="/contact" className="bg-white text-gray-900 border-2 border-gray-100 text-sm font-black uppercase tracking-widest px-10 py-5 rounded-2xl hover:bg-gray-50 transition-all flex items-center justify-center gap-3">
+              Request Callback <FiArrowRight className="text-xl" />
             </Link>
           </div>
         </div>
