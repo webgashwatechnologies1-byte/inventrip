@@ -7,7 +7,7 @@ import imgSpiti2 from '../assets/images/destinations/spiti_2.jpg';
 import imgLeh1 from '../assets/images/destinations/lehladakhh.jpg';
 import imgLeh2 from '../assets/images/destinations/ladakh.jpg';
 import imgRaj1 from '../assets/images/destinations/rajsthann.jpg';
-import imgjaisalmer from '../assets/images/destinations/jaisalmer.jpg';
+import imgjaisalmer from '../assets/images/destinations/Jaisalmer.jpg';
 
 import imggrandrajsthan from '../assets/images/destinations/rajasthan-heritage.jpg';
 import imgRaj2 from '../assets/images/destinations/rajasthan_1.jpg';
@@ -38,7 +38,7 @@ import imggoahoneymoon from '../assets/images/destinations/goahoneymoon.jpg';
 import imgdhudhsagarfalls from '../assets/images/destinations/hudhsagarfalls.jpg';
 import imgnightlife from '../assets/images/destinations/nightlife.jpg';
 import imgmunnar from '../assets/images/destinations/munnar.jpg';
-import imgwayanadnNature from '../assets/images/destinations/wayanadnnature.jpg';
+import imgwayanadnNature from '../assets/images/destinations/wayanadnNature.jpg';
 import imgthekkadadywildlife from '../assets/images/destinations/thekkadadywildlife.jpg';
 import imgluxuryretreat from '../assets/images/destinations/luxuryretreat.jpg';
 import imgkochi from '../assets/images/destinations/kochi.jpg';
@@ -757,7 +757,7 @@ export const destinations = {
                 price: 14500,
                 originalPrice: 18000,
                 duration: "3 Days & 2 Nights",
-                image: imgnightlife ,
+                image: imgnightlife,
                 rating: 4.7,
                 reviews: 132,
                 itinerary: [
@@ -778,7 +778,7 @@ export const destinations = {
                 price: 22000,
                 originalPrice: 27000,
                 duration: "5D/4N",
-                images:  imgmunnar,
+                images: imgmunnar,
                 image: imgmunnar,
                 rating: 4.8,
                 reviews: 190,
