@@ -710,7 +710,7 @@ const Home = () => {
           </div>
           <div className="text-center mt-16">
             <Link
-              to="/booking"
+              to="/destination"
               className="inline-block bg-primary text-white px-12 py-4 rounded-full font-bold hover:shadow-xl transition-all uppercase text-xs tracking-widest focus:scale-95"
             >
               Explore All Packages
