@@ -96,7 +96,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    to="/privacy-policy"
+                    to="/privacy"
                     className="text-gray-500 text-xs hover:text-gray-900 transition-colors uppercase font-medium"
                   >
                     Privacy Policy
@@ -153,7 +153,7 @@ const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    to="/destinations"
+                    to="/destinations/himachal"
                     className="text-gray-500 text-xs hover:text-gray-900 transition-colors uppercase font-medium"
                   >
                     Destination
@@ -170,7 +170,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    to="/transportation"
+                    to="/transport"
                     className="text-gray-500 text-xs hover:text-gray-900 transition-colors uppercase font-medium"
                   >
                     Transportation
@@ -178,15 +178,15 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    to="/expedation"
+                    to="/expedition"
                     className="text-gray-500 text-xs hover:text-gray-900 transition-colors uppercase font-medium"
                   >
-                    Expedation
+                    Expedition
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/bookings"
+                    to="/booking"
                     className="text-gray-500 text-xs hover:text-gray-900 transition-colors uppercase font-medium"
                   >
                     Booking

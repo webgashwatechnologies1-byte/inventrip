@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import { FiCheckCircle, FiDollarSign, FiHeadphones, FiCalendar, FiGlobe, FiRepeat, FiHome, FiShield, FiFileText, FiPhone, FiAward, FiSettings, FiTarget, FiZap, FiCheck, FiArrowRight } from 'react-icons/fi';
 import { HiOutlineLightBulb, HiOutlineSparkles, HiOutlineBriefcase, HiOutlineUserGroup, HiOutlineGlobeAlt, HiMiniTrophy, HiMiniRocketLaunch, HiMiniHandThumbUp } from 'react-icons/hi2';
+import aboutHeroNew from '../assets/images/about_hero_new.png';
+import trustedPartnerNew from '../assets/images/trusted_partner_new.png';
+import { destinations } from '../data/packages';
 
 const handleImageError = (e) => {
   e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"; // High-quality travel fallback
@@ -53,7 +56,7 @@ const About = () => {
       <section className="relative h-[400px] md:h-[500px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920"
+            src={aboutHeroNew}
             alt="About Banner"
             onError={handleImageError}
             className="w-full h-full object-cover"
@@ -63,9 +66,9 @@ const About = () => {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
           <div className="max-w-3xl">
-            <p className="text-tertiary font-black uppercase tracking-[0.4em] mb-4 animate-fade-in">Discover Our Story</p>
+            <p className="text-tertiary font-black uppercase tracking-[0.4em] mb-4 animate-fade-in">Experience the Extraordinary</p>
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none">
-              Crafting <span className="text-tertiary italic">Memorable</span> <br /> Journeys Since 2018
+              Discover the <span className="text-tertiary italic">Unseen Beauty</span> <br /> of India
             </h1>
             <p className="text-lg md:text-xl text-gray-300 font-light max-w-2xl leading-relaxed">
               Inventrip is your one-stop platform for all travel needs - from complete tour packages to individual bus, taxi, train, and flight bookings across India.
@@ -81,7 +84,7 @@ const About = () => {
             <div className="relative">
               <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] rotate-3 -z-10"></div>
               <img
-                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1000"
+                src={trustedPartnerNew}
                 alt="Our Vision"
                 onError={handleImageError}
                 className="relative rounded-[2.5rem] shadow-2xl w-full aspect-square object-cover"
@@ -93,9 +96,9 @@ const About = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="inline-block px-4 py-1 bg-primary/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-primary">Our Legacy</div>
+              <div className="inline-block px-4 py-1 bg-primary/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-primary">Excellence Defined</div>
               <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-                Your Trusted <span className="text-primary italic">Travel Partner</span> Across India
+                Experience <span className="text-primary italic">Excellence</span> in Every Journey
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Inventrip offers comprehensive travel solutions including curated tour packages, bus bookings, taxi rentals, railway tickets, flight reservations, and hotel accommodations. Whether you need a complete package or just transport, we've got you covered with verified services and competitive pricing.
@@ -147,11 +150,57 @@ const About = () => {
         </div>
       </section>
 
+      {/* SECTION: POPULAR DESTINATIONS */}
+      <section className="pt-12 pb-24 max-w-7xl mx-auto px-4 sm:px-2 lg:px-4">
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+              Popular Destinations
+            </h2>
+            <p className="text-gray-500 text-sm">
+              Most searched locations this week
+            </p>
+          </div>
+          <Link
+            to="/booking"
+            className="text-primary font-bold text-sm hover:underline"
+          >
+            View All →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {Object.values(destinations)
+            .slice(0, 4)
+            .map((dest) => (
+              <Link
+                key={dest.slug}
+                to={`/destinations/${dest.slug}`}
+                className="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-lg"
+              >
+                <img
+                  src={dest.packages[0]?.image}
+                  className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                  alt={dest.name}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-8 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-2xl font-bold mb-2">{dest.name}</h3>
+                  <div className="h-0.5 w-12 bg-primary mb-3 origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-100"></div>
+                  <p className="text-xs text-white/80 uppercase tracking-widest font-semibold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                    Explore Packages <FiArrowRight />
+                  </p>
+                </div>
+              </Link>
+            ))}
+        </div>
+      </section>
+
       {/* SECTION 3: CORE VALUES */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-20 text-center md:text-left">
+          <div className="w-full mb-20 text-center md:text-left">
             <p className="text-primary font-black uppercase tracking-[0.3em] mb-4">Our Values</p>
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-none mb-8">
               The Principles That <span className="text-primary italic">Define Us</span>

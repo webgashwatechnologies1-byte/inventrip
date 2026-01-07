@@ -45,7 +45,7 @@ const Navbar = () => {
       type: 'dropdown',
       icon: <FiGlobe className="w-5 h-5 mb-1" />,
       items: [
-        { name: 'All Destinations', path: '/destination' },
+        // { name: 'All Destinations', path: '/destination' },
         { name: 'Himachal', path: '/destinations/himachal' },
         { name: 'Spiti', path: '/destinations/spiti' },
         { name: 'Leh', path: '/destinations/leh' },
@@ -61,20 +61,20 @@ const Navbar = () => {
       type: 'dropdown',
       icon: <FiTruck className="w-5 h-5 mb-1" />,
       items: [
-        { name: 'Taxi', path: '/transport' },
-        { name: 'Volvo', path: '/transport' },
-        { name: 'Flight', path: '/transport' },
-        { name: 'Railway', path: '/transport' }
+        { name: 'Taxi', path: '/taxi-booking' },
+        { name: 'Volvo', path: '/volvo-booking' },
+        { name: 'Flight', path: '/flight-booking' },
+        { name: 'Railway', path: '/railway-booking' }
       ]
     },
     {
       name: 'Tracking',
-      path: '/tracking',
+      path: '/kinnaur-trekking',
       type: 'dropdown',
       icon: <FiMapPin className="w-5 h-5 mb-1" />,
       items: tracking.map(trek => ({
         name: trek.title,
-        path: `/tracking/${trek.slug}`
+        path: `/kinnaur-trekking`
       }))
     },
     {
@@ -98,12 +98,12 @@ const Navbar = () => {
   ];
 
   const destinationNavItems = [
-    {
-      name: 'All',
-      path: '/destination',
-      type: 'link',
-      icon: <FiGlobe className="w-5 h-5 mb-1" />
-    },
+    // {
+    //   name: 'All',
+    //   path: '/destination',
+    //   type: 'link',
+    //   icon: <FiGlobe className="w-5 h-5 mb-1" />
+    // },
     {
       name: 'Himachal',
       path: '/destinations/himachal',
@@ -164,7 +164,7 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex items-center flex-shrink-0">
               <Link to="/" className="flex items-center gap-1 sm:gap-2">
-                <img src={logo} alt="Inventrip Logo" className="h-12 w-auto sm:h-14" />
+                <img src={logo} alt="Inventrip Logo" className="h-14 w-auto sm:h-16" />
                 {/* <span className="hidden lg:inline text-xl sm:text-2xl font-bold text-primary">Inventrip</span> */}
               </Link>
             </div>

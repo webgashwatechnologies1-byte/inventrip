@@ -13,15 +13,25 @@ import RefundPolicy from './pages/RefundPolicy';
 import VisionMission from './pages/VisionMission';
 import Testimonials from './pages/Testimonials';
 import Destination from './pages/Destination';
-import AllDestinations from './pages/AllDestinations';
+// import AllDestinations from './pages/AllDestinations';
 import PackageDetail from './pages/PackageDetail';
 import Transport from './pages/Transport';
-import TransportDetail from './pages/TransportDetail';
+// import TransportDetail from './pages/TransportDetail';
+import RailwayBooking from './pages/RailwayBooking';
+import RailwayDetail from './pages/RailwayDetail';
+import VolvoBooking from './pages/VolvoBooking';
+import VolvoDetail from './pages/VolvoDetail';
+import TaxiBooking from './pages/TaxiBooking';
+import TaxiDetail from './pages/TaxiDetail';
+import FlightBooking from './pages/FlightBooking';
+import FlightDetail from './pages/FlightDetail';
 import Tracking from './pages/Tracking';
 import TrackingDetail from './pages/TrackingDetail';
 import Expedition from './pages/Expedition';
 import ExpeditionDetail from './pages/ExpeditionDetail';
 import { PopupProvider } from './context/PopupContext';
+import KinnaurTrekking from './pages/KinnaurTrekking';
+
 // import TopLoader from './components/TopLoader';
 import GlobalPopup from './components/GlobalPopup';
 
@@ -56,12 +66,24 @@ function App() {
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/vision-mission" element={<VisionMission />} />
               <Route path="/testimonials" element={<Testimonials />} />
-              <Route path="/destination" element={<AllDestinations />} />
+              {/* <Route path="/destination" element={<AllDestinations />} /> */}
               <Route path="/destinations/:slug" element={<Destination />} />
               <Route path="/package/:slug" element={<PackageDetail />} />
               <Route path="/transport" element={<Transport />} />
-              <Route path="/transport/:category/:id" element={<TransportDetail />} />
-              <Route path="/tracking" element={<Tracking />} />
+              <Route path="/kinnaur-trekking" element={<KinnaurTrekking />} />
+
+              {/* New Unique Transport Routes */}
+              <Route path="/railway-booking" element={<RailwayBooking />} />
+              <Route path="/railway-booking/:id" element={<RailwayDetail />} />
+              <Route path="/volvo-booking" element={<VolvoBooking />} />
+              <Route path="/volvo-booking/:id" element={<VolvoDetail />} />
+              <Route path="/taxi-booking" element={<TaxiBooking />} />
+              <Route path="/taxi-booking/:id" element={<TaxiDetail />} />
+              <Route path="/flight-booking" element={<FlightBooking />} />
+              <Route path="/flight-booking/:id" element={<FlightDetail />} />
+
+              {/* <Route path="/transport/:category/:id" element={<TransportDetail />} /> */}
+              {/* <Route path="/tracking" element={<KinnaurTrekking />} /> */}
               <Route path="/tracking/:slug" element={<TrackingDetail />} />
               <Route path="/expedition" element={<Expedition />} />
               <Route path="/expedition/:type" element={<Expedition />} />
